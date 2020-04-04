@@ -2,7 +2,7 @@
 
 Name:           %{?scl_prefix}perl-Locale-Codes
 Version:        3.62
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Distribution of modules to handle locale codes
 License:        GPL+ or Artistic
 URL:            https://metacpan.org/release/Locale-Codes
@@ -61,7 +61,7 @@ perl -i -lne 'print $_ unless m{\At/_}' MANIFEST
 rm t/runtests t/runtests.bat
 perl -i -lne 'print $_ unless m{\At/runtests}' MANIFEST
 # Fix shebangs
-%{?scl:scl enable %{scl} '}perl -MConfig -i -pe %{?scl:'"}'%{?scl:"'}s{^#!/usr/bin/perl\b}{$Config{startperl}}%{?scl:'"}'%{?scl:"'} t/*%{?scl:'}
+%{?scl:scl enable %{scl} '}perl -MConfig -i -pe %{?scl:'"}'%{?scl:"'}s{^#!/usr/bin/perl\b}{$Config{startperl}}%{?scl:'"}'%{?scl:"'} t/* examples/*%{?scl:'}
 
 %build
 %{?scl:scl enable %{scl} '}perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1 && %{make_build}%{?scl:'}
@@ -91,6 +91,9 @@ unset RELEASE_TESTING
 %{_libexecdir}/%{name}
 
 %changelog
+* Thu Mar 26 2020 Petr Pisar <ppisar@redhat.com> - 3.62-4
+- Normalize all shebangs (bug #1817411)
+
 * Fri Mar 13 2020 Petr Pisar <ppisar@redhat.com> - 3.62-3
 - Fix shebangs (bug #1813201)
 
