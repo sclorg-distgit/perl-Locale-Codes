@@ -2,7 +2,7 @@
 
 Name:           %{?scl_prefix}perl-Locale-Codes
 Version:        3.62
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Distribution of modules to handle locale codes
 License:        GPL+ or Artistic
 URL:            https://metacpan.org/release/Locale-Codes
@@ -12,6 +12,7 @@ BuildRequires:  coreutils
 BuildRequires:  make
 BuildRequires:  %{?scl_prefix}perl-generators
 BuildRequires:  %{?scl_prefix}perl-interpreter
+BuildRequires:  %{?scl_prefix}perl(Config)
 BuildRequires:  %{?scl_prefix}perl(ExtUtils::MakeMaker) >= 6.76
 BuildRequires:  %{?scl_prefix}perl(strict)
 BuildRequires:  %{?scl_prefix}perl(warnings)
@@ -59,6 +60,8 @@ perl -i -lne 'print $_ unless m{\At/_}' MANIFEST
 # Delete unused files
 rm t/runtests t/runtests.bat
 perl -i -lne 'print $_ unless m{\At/runtests}' MANIFEST
+# Fix shebangs
+%{?scl:scl enable %{scl} '}perl -MConfig -i -pe %{?scl:'"}'%{?scl:"'}s{^#!/usr/bin/perl\b}{$Config{startperl}}%{?scl:'"}'%{?scl:"'} t/*%{?scl:'}
 
 %build
 %{?scl:scl enable %{scl} '}perl Makefile.PL INSTALLDIRS=vendor NO_PACKLIST=1 NO_PERLLOCAL=1 && %{make_build}%{?scl:'}
@@ -88,6 +91,9 @@ unset RELEASE_TESTING
 %{_libexecdir}/%{name}
 
 %changelog
+* Fri Mar 13 2020 Petr Pisar <ppisar@redhat.com> - 3.62-3
+- Fix shebangs (bug #1813201)
+
 * Fri Jan 03 2020 Jitka Plesnikova <jplesnik@redhat.com> - 3.62-2
 - SCL
 
